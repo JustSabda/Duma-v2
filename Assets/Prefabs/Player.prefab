@@ -214,7 +214,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.24}
-  m_Size: {x: 1, y: 1.52}
+  m_Size: {x: 0.93, y: 1.52}
   m_Direction: 0
 --- !u!61 &7674869140816764352
 BoxCollider2D:
@@ -223,7 +223,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6654664915491485210}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1

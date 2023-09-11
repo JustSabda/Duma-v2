@@ -8,6 +8,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -99,13 +100,28 @@ public class PlayerMovement : MonoBehaviour
 		LastPressedJumpTime -= Time.deltaTime;
 		#endregion
 
+
 		isDead = GameManager.Instance.isGameOver;
 
 		#region INPUT HANDLER
 		if (!isDead)
 		{
-			_moveInput.x = Input.GetAxisRaw("Horizontal");
-			_moveInput.y = Input.GetAxisRaw("Vertical");
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+				ButtonRight();
+            }
+			else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				ButtonLeft();
+			}
+			else if (!Input.anyKey)
+			{
+				ButtonUp();
+			}
+			
+			//_moveInput.x = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+			//_moveInput.y = Input.GetAxisRaw("Vertical");
+
 
 			if (_moveInput.x != 0)
 			{
@@ -271,7 +287,21 @@ public class PlayerMovement : MonoBehaviour
 		#endregion
     }
 
-    private void FixedUpdate()
+	public void ButtonRight()
+    {
+		_moveInput.x = 1;
+	}
+	public void ButtonLeft()
+	{
+		_moveInput.x = -1;
+	}
+	public void ButtonUp()
+    {
+		_moveInput.x = 0;
+	}
+
+
+	private void FixedUpdate()
 	{
 		//Handle Run
 		if (IsWallJumping)

@@ -30,24 +30,11 @@ public class SceneLoad : MonoBehaviour
             Instance = this;
         }
 
-        if (MenuPanel == null)
+        if (MenuPanel == null || tutorPanel == null || creditPanel == null || pausePanel == null)
         {
             return;
         }
-        if (tutorPanel == null)
-        {
-            return;
-        }
-        if (creditPanel == null)
-        {
-            return;
-        }
-
-        if (pausePanel == null)
-        {
-            return;
-        }
-
+       
         /*
         if(Tutor1 == null && Tutor2 == null && Tutor3 == null)
         {
@@ -109,41 +96,69 @@ public class SceneLoad : MonoBehaviour
 
     public void TutorPanel()
     {
-        MenuPanel.SetActive(false);
-        settingPanel.SetActive(false);
-        creditPanel.SetActive(false);
-        tutorPanel.SetActive(true);
+        if (MenuPanel == null || tutorPanel == null || creditPanel == null || pausePanel == null)
+        {
+            return;
+        }
+        else
+        {
+            MenuPanel.SetActive(false);
+            settingPanel.SetActive(false);
+            creditPanel.SetActive(false);
+            tutorPanel.SetActive(true);
+        }
     }
 
     public void SettingPanel()
     {
-        MenuPanel.SetActive(false);
-        settingPanel.SetActive(true);
-        creditPanel.SetActive(false);
-        tutorPanel.SetActive(false);
+        if (MenuPanel == null || tutorPanel == null || creditPanel == null || pausePanel == null)
+        {
+            return;
+        }
+        else
+        {
+            MenuPanel.SetActive(false);
+            settingPanel.SetActive(true);
+            creditPanel.SetActive(false);
+            tutorPanel.SetActive(false);
+        }
     }
    
     public void CreditPanel()
     {
-        MenuPanel.SetActive(false);
-        settingPanel.SetActive(false);
-        creditPanel.SetActive(true);
-        tutorPanel.SetActive(false);
+        if (MenuPanel == null || tutorPanel == null || creditPanel == null || pausePanel == null)
+        {
+            return;
+        }
+        else
+        {
+            MenuPanel.SetActive(false);
+            settingPanel.SetActive(false);
+            creditPanel.SetActive(true);
+            tutorPanel.SetActive(false);
+        }
     }
 
     public void Back()
     {
-        MenuPanel.SetActive(true);
-        settingPanel.SetActive(false);
-        creditPanel.SetActive(false);
-        tutorPanel.SetActive(false);
+        if (MenuPanel == null || tutorPanel == null || creditPanel == null || pausePanel == null)
+        {
+            return;
+        }
+        else
+        {
+            MenuPanel.SetActive(true);
+            settingPanel.SetActive(false);
+            creditPanel.SetActive(false);
+            tutorPanel.SetActive(false);
+        }
     }
 
     public void BackMainMenu()
     {
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         PlayerPrefs.SetInt("SavedScene", currentSceneIndex);
-        AudioManager.Instance.x = true;
+        //AudioManager.Instance.x = true;
         SceneManager.LoadScene(0);
     }
 
@@ -157,7 +172,7 @@ public class SceneLoad : MonoBehaviour
             return;
         Time.timeScale = 1f;
 
-        AudioManager.Instance.x = true;
+        //AudioManager.Instance.x = true;
     }
     public void Restart()
     {

@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
     {
         player.RB.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
-        //player.RB.AddForce( new Vector2(0, 1) * 50);
+        player.RB.AddForce( new Vector2(0, 1) * 50);
         yield return new WaitForSeconds(0.7f);
 
         player.RB.constraints = RigidbodyConstraints2D.FreezeRotation;
