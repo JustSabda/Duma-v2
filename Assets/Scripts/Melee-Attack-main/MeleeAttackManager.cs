@@ -11,7 +11,7 @@ public class MeleeAttackManager : Character
     //How long the player should move when melee attack collides with a GameObject that has EnemyHealth script on it
     public float movementTime = .1f;
     //Input detection to see if the button to perform a melee attack has been pressed
-    private bool meleeAttack;
+    [HideInInspector]public bool meleeAttack;
     //The animator on the meleePrefab
     private Animator meleeAnimator;
 
@@ -74,6 +74,7 @@ public class MeleeAttackManager : Character
             //Sets the meleeAttack bool to true
             if(canAttack)
             meleeAttack = true;
+            AudioManager.Instance.PlaySFX("Attack SFX");
         }
         else
         {

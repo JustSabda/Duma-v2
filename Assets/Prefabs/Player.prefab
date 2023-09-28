@@ -126,10 +126,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 9b4616493998e734c847c1f9656fad02, type: 2}
   _groundCheckPoint: {fileID: 6654664916040931668}
-  _groundCheckSize: {x: 0.49, y: 0.03}
+  _groundCheckSize: {x: 0.22, y: 0.03}
   _frontWallCheckPoint: {fileID: 6654664917153633039}
   _backWallCheckPoint: {fileID: 6654664915367802454}
-  _wallCheckSize: {x: 0.14, y: 1.22}
+  _wallCheckSize: {x: 0.05, y: 0.47}
+  canMove: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -170,14 +171,14 @@ MonoBehaviour:
   grabbingLedge: 0
   takingDamage: 0
   isDead: 0
-  maxHealthPoints: 100
-  verticalKnockbackForce: 80
-  horizontalKnockbackForce: 150
-  invulnerabilityTime: 0.25
+  maxHealthPoints: 30
+  currentHealthPoints: 0
+  verticalKnockbackForce: 50
+  horizontalKnockbackForce: 200
+  invulnerabilityTime: 0.2
   cancelMovementTime: 0.65
   hit: 0
   enemy: {fileID: 0}
-  currentHealthPoints: 0
 --- !u!114 &6654664915491485187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +200,7 @@ MonoBehaviour:
   defaultForce: 300
   upwardsForce: 600
   movementTime: 0.1
+  meleeAttack: 0
   delayAttack: 1
 --- !u!70 &6654664915491485186
 CapsuleCollider2D:
@@ -301,7 +303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6654664916848519501}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.73, y: 0, z: 0}
+  m_LocalPosition: {x: 0.73, y: 0.16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -320,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54184e379e828274a9068c9bf714b86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 20
+  damageAmount: 15
 --- !u!70 &6654664916848519499
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -397,13 +399,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
   m_DrawMode: 0
-  m_Size: {x: 4.69, y: 3.23}
+  m_Size: {x: 3.18, y: 1.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

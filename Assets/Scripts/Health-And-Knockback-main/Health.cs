@@ -19,8 +19,8 @@ public class Health : Character
     */
 
     //The maximum number of health points the player can have
-    [HideInInspector]
     public int maxHealthPoints;
+    public int currentHealthPoints;
     //How high the player goes when they receive damage
     [SerializeField]
     private float verticalKnockbackForce;
@@ -43,7 +43,7 @@ public class Health : Character
 
     //The current number of health points on the player after damage is applied
     
-    public int currentHealthPoints;
+    
     //Unique for this solution if you player uses a CapsuleCollider2D; if you don't have a CapsuleCollider2D, you probably won't need to reference you exact collider type as you don't need to change the direction
     private CapsuleCollider2D playerCollider;
 
@@ -82,9 +82,10 @@ public class Health : Character
             HandleKnockBack();
         }
 
-        if(UIManager.Instance.healthImage != null)
-        UIManager.Instance.UI_Health(currentHealthPoints, maxHealthPoints);
-        
+        if (UIManager.Instance.healthImage != null)
+            UIManager.Instance.UI_Health(currentHealthPoints, maxHealthPoints);
+
+
     }
 
     //This method is called by any script that would need to handle damage; for this tutorial it is called by the DamageField script
@@ -93,10 +94,15 @@ public class Health : Character
         //First checks to see if the player is currently in an invulnerable state; if not it runs the following logic.
         if (!hit)
         {
+
+
+
             //First sets invulnerable to true
             hit = true;
             //Reduces currentHealthPoints by the amount value that was set by whatever script called this method, for this tutorial in the OnTriggerEnter2D() method
             currentHealthPoints -= amount;
+
+            AudioManager.Instance.PlaySFX("Hit SFX");
             //If currentHealthPoints is below zero, player is dead, and then we handle all the logic to manage the dead state
             if (currentHealthPoints <= 0)
             {
@@ -133,18 +139,25 @@ public class Health : Character
         //Plays the damage animation
         //anim.SetBool("Damage", true);
 
-        //Adds a slightly upwards knockback force, this value probably shouldn't be as strong as the horizontal
-        rb.AddForce(Vector2.up * verticalKnockbackForce);
-        //This if statement checks to see if you are facing left or right when taking damage; depending on what direction you are facing, the knockback force will be applied appropriately backwards 
-        if (transform.position.x < enemy.transform.position.x)
+        if (enemy.gameObject.tag == "Spike")
         {
-            //If the player is facing right, then backwards knockback would be going to the left
-            rb.AddForce(Vector2.left * horizontalKnockbackForce);
+            rb.AddForce(Vector2.up * verticalKnockbackForce);
         }
         else
         {
-            //If the player is facing left, then backwards knockback would be going to the right
-            rb.AddForce(Vector2.right * horizontalKnockbackForce);
+            //Adds a slightly upwards knockback force, this value probably shouldn't be as strong as the horizontal
+            //rb.AddForce(Vector2.up * verticalKnockbackForce);
+            //This if statement checks to see if you are facing left or right when taking damage; depending on what direction you are facing, the knockback force will be applied appropriately backwards 
+            if (transform.position.x < enemy.transform.position.x)
+            {
+                //If the player is facing right, then backwards knockback would be going to the left
+                rb.AddForce(Vector2.left * horizontalKnockbackForce);
+            }
+            else
+            {
+                //If the player is facing left, then backwards knockback would be going to the right
+                rb.AddForce(Vector2.right * horizontalKnockbackForce);
+            }
         }
         //This method is called very quickly to stop knockback forces from being applied
         Invoke("CancelHit", invulnerabilityTime);

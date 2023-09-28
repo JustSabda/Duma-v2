@@ -13,38 +13,80 @@ public class EnemyPatrol : MonoBehaviour
     public float speed;
     public float curSpeed;
 
+
+    public Transform playerTransform;
+    public bool isChasing;
+    public float chaseDistance;
+
     // Start is called before the first frame update
     void Start()
     {
+        isChasing = false;
+        playerTransform = GameObject.FindWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         currentPoint = pointB.transform;
+
         anim.SetBool("isRunning", true);
         curSpeed = speed;
+        
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector2 point = currentPoint.position - transform.position;
-        if(currentPoint == pointB.transform)
+
+        if (isChasing)
         {
-            rb.velocity = new Vector2(curSpeed, 0);
+            if(transform.position.x < playerTransform.position.x)
+            {
+                if (curSpeed != 0)
+                    rb.velocity = new Vector2(curSpeed + 1, 0);
+            }
+            else
+            {
+                if (curSpeed != 0)
+                    rb.velocity = new Vector2(-curSpeed - 1 , 0);
+            }
+
+            if (Vector2.Distance(transform.position, playerTransform.position) > chaseDistance)
+            {
+                isChasing = false;
+            }
         }
         else
         {
-            rb.velocity = new Vector2(-curSpeed, 0);
-        }
 
-        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
-        {
-            StartCoroutine(Idle());
-            currentPoint = pointA.transform;
-        }
-        else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
-        {
-            StartCoroutine(Idle());
-            currentPoint = pointB.transform;
+            if (currentPoint == pointB.transform)
+            {
+                rb.velocity = new Vector2(curSpeed, 0);
+                if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance && transform.position.x < playerTransform.position.x)
+                {
+                    isChasing = true;
+                }
+            }
+            else
+            {
+                rb.velocity = new Vector2(-curSpeed, 0);
+                if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance && transform.position.x > playerTransform.position.x)
+                {
+                    isChasing = true;
+                }
+            }
+
+            if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointB.transform)
+            {
+                StartCoroutine(Idle());
+                currentPoint = pointA.transform;
+            }
+            else if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pointA.transform)
+            {
+                StartCoroutine(Idle());
+                currentPoint = pointB.transform;
+            }
         }
 
     }

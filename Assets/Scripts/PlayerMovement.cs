@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Vector2 _wallCheckSize = new Vector2(0.5f, 1f);
 	private Character character;
 
+	[HideInInspector] public bool canMove;
 
 	[Header("Layers & Tags")]
 	[SerializeField] private LayerMask _groundLayer;
@@ -73,12 +74,14 @@ public class PlayerMovement : MonoBehaviour
 
 	private Animator anim;
 
+	MeleeAttackManager attackManager;
 
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
 		character = GetComponent<Character>();
 		anim = GetComponentInChildren<Animator>();
+		attackManager = GetComponent<MeleeAttackManager>();
 	}
 
 	private void Start()
@@ -87,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
 		IsFacingRight = true;
 		GameManager.Instance.respawnPoint = transform.position;
 		isDead = false;
+		canMove = true;
 	}
 
 	private void Update()
@@ -100,48 +104,50 @@ public class PlayerMovement : MonoBehaviour
 		LastPressedJumpTime -= Time.deltaTime;
 		#endregion
 
-
 		isDead = GameManager.Instance.isGameOver;
 
 		#region INPUT HANDLER
 		if (!isDead)
 		{
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-				ButtonRight();
-            }
-			else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+			if (canMove)
 			{
-				ButtonLeft();
-			}
-			else if (!Input.anyKey)
-			{
-				ButtonUp();
-			}
-			
-			//_moveInput.x = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-			//_moveInput.y = Input.GetAxisRaw("Vertical");
+				if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+				{
+					ButtonRight();
+				}
+				else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					ButtonLeft();
+				}
+				else if (!Input.anyKey)
+				{
+					ButtonUp();
+				}
+
+				//_moveInput.x = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+				//_moveInput.y = Input.GetAxisRaw("Vertical");
 
 
-			if (_moveInput.x != 0)
-			{
-				CheckDirectionToFace(_moveInput.x > 0);
-				if (!IsJumping || !IsWallJumping)
-					anim.SetBool("PlayerRun", true);
-			}
-			else
-			{
-				anim.SetBool("PlayerRun", false);
-			}
+				if (_moveInput.x != 0)
+				{
+					CheckDirectionToFace(_moveInput.x > 0);
+					if (!IsJumping || !IsWallJumping)
+						anim.SetBool("PlayerRun", true);
+				}
+				else
+				{
+					anim.SetBool("PlayerRun", false);
+				}
 
-			if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J))
-			{
-				OnJumpInput();
-			}
+				if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J))
+				{
+					OnJumpInput();
+				}
 
-			if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J))
-			{
-				OnJumpUpInput();
+				if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.C) || Input.GetKeyUp(KeyCode.J))
+				{
+					OnJumpUpInput();
+				}
 			}
 		}
         else
@@ -285,7 +291,21 @@ public class PlayerMovement : MonoBehaviour
 			SetGravityScale(Data.gravityScale);
 		}
 		#endregion
+
+		//if(attackManager.meleeAttack == true)
+  //      {
+		//	canMove = false;
+		//	anim.SetTrigger("PlayerAttack");
+		//	StartCoroutine(Slash(anim.GetCurrentAnimatorStateInfo(0).length));
+		//}
     }
+
+	IEnumerator Slash(float delay)
+    {
+
+		yield return new WaitForSeconds(delay);
+		canMove = true;
+	}
 
 	public void ButtonRight()
     {
@@ -425,6 +445,8 @@ public class PlayerMovement : MonoBehaviour
 		anim.SetBool("PlayerJump", true);
 		anim.SetBool("PlayerRun", false);
 
+
+		AudioManager.Instance.PlaySFX("JumpSFX");
 		#endregion
 	}
 

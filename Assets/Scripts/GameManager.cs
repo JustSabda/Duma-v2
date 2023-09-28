@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         if(Objective == victoryCondition)
         {
             isWin = true;
+            AudioManager.Instance.PlaySFX("Win");
         }
 
         if (!SceneLoad.Instance.isPaused)
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
             if (isGameOver)
             {
                 Time.timeScale = 0;
+                AudioManager.Instance.PlaySFX("Lose");
             }
             else
             {
